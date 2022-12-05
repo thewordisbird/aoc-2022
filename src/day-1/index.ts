@@ -14,7 +14,7 @@ export async function day1Problem1() {
   return max;
 }
 
-export async function day1problem2() {
+export async function day1Problem2() {
   const meals = readLines<string>(inputPath);
   const mealsPerElf = groupByDelimiter('', meals);
 
