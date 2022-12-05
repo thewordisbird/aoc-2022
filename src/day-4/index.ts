@@ -1,30 +1,21 @@
-import * as fs from 'fs';
-import * as readline from 'readline';
 import * as path from 'path';
+import { readLines } from '../utils';
 
 const inputPath = path.join(__dirname, '..', '..', 'assets', 'day_4_input.txt');
 
-async function inputLines() {
-  return readline.createInterface({
-    input: fs.createReadStream(inputPath),
-  });
-}
-
-export async function d4SolutionA() {
-  // parse file line by line
-  const lines = await inputLines();
+export async function day4Problem1() {
+  const data = readLines<string>(inputPath);
 
   let overlap = 0;
-  let noOverlap = 0;
 
-  for await (const line of lines) {
+  for await (const line of data) {
     const [elf1, elf2] = line.split(',');
     if (hasFullOverlap(elf1, elf2)) {
-      overlap = overlap + 1;
-    } else {
-      noOverlap = noOverlap + 1;
+      overlap++;
     }
   }
+
+  return overlap;
 
   function hasFullOverlap(elf1: string, elf2: string) {
     const [elf1Min, elf1Max] = elf1.split('-');
@@ -40,27 +31,21 @@ export async function d4SolutionA() {
 
     return false;
   }
-
-  console.log(overlap, noOverlap, overlap + noOverlap);
-
-  return overlap;
 }
 
-export async function d4SolutionB() {
-  // parse file line by line
-  const lines = await inputLines();
+export async function day4Problem2() {
+  const data = readLines<string>(inputPath);
 
   let overlap = 0;
-  let noOverlap = 0;
 
-  for await (const line of lines) {
+  for await (const line of data) {
     const [elf1, elf2] = line.split(',');
-    if (hasNoOverlap(elf1, elf2)) {
-      noOverlap = noOverlap + 1;
-    } else {
-      overlap = overlap + 1;
+    if (!hasNoOverlap(elf1, elf2)) {
+      overlap++;
     }
   }
+
+  return overlap;
 
   function hasNoOverlap(elf1: string, elf2: string) {
     const [elf1Min, elf1Max] = elf1.split('-');
@@ -74,8 +59,4 @@ export async function d4SolutionB() {
 
     return false;
   }
-
-  console.log(overlap, noOverlap, overlap + noOverlap);
-
-  return noOverlap;
 }

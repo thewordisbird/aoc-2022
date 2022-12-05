@@ -1,17 +1,24 @@
-import { day_1_problem_1 } from './day-1';
-import { day_2_problem_1, day_2_problem_2 } from './day-2';
-import { partOneSolution, partTwoSolution } from './day-3';
-import { d4SolutionA, d4SolutionB } from './day-4';
+import { day1Problem1, day1Problem2 } from './day-1';
+import { day2Problem1, day2Promblem2 } from './day-2';
 
-console.log('question 1:');
-d4SolutionA().then((score) => console.log(score));
-console.log('question 2:');
-d4SolutionB().then((score) => console.log(score));
+async function main() {
+  await logDayResult(1, day1Problem1, day1Problem2);
+  await logDayResult(2, day2Problem1, day2Promblem2);
+}
 
-// 549 too high
-// 522 too high
+main();
 
-// partOneSolution().then((result) => console.log('Part One: ', result));
-// partTwoSolution().then((result) => console.log('Part Two: ', result));
+/* helpers */
 
-// 3975 too high
+async function logDayResult(
+  day: number,
+  solution1?: () => Promise<unknown>,
+  solution2?: () => Promise<unknown>
+) {
+  console.log(`Advent of Code - Day ${day}`);
+  solution1 &&
+    (await solution1().then((result) => console.log('Problem 1:', result)));
+  solution2 &&
+    (await solution2().then((result) => console.log('Problem 2: ', result)));
+  console.log('\n');
+}

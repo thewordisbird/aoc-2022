@@ -1,24 +1,29 @@
-// parse file by line
-// splice each line in half
-// find the common char in each pair
-import * as fs from 'fs';
-import * as readline from 'readline';
 import * as path from 'path';
+import { readLines, groupBySize } from '../utils';
 
 const inputPath = path.join(__dirname, '..', '..', 'assets', 'day_3_input.txt');
 
-async function inputLines() {
-  return readline.createInterface({
-    input: fs.createReadStream(inputPath),
-  });
-}
+export async function day3Problem1() {
+  const data = readLines<string>(inputPath);
+  const sharedItems = generateSharedItems();
 
-export async function partOneSolution() {
-  function processLine(line: string) {
-    function splitLineInHalf(): [string, string] {
+  let score = 0;
+  for await (const sharedItem of sharedItems) {
+    score += findItemPriority(sharedItem);
+  }
+
+  return score;
+
+  async function* generateSharedItems() {
+    for await (const line of data) {
+      yield findSharedItem(splitLineInHalf(line));
+    }
+
+    function splitLineInHalf(line: string): [string, string] {
       const splitIdx = line.length / 2;
       return [line.slice(0, splitIdx), line.slice(splitIdx)];
     }
+
     function findSharedItem(tuple: [string, string]) {
       const setOne = new Set(tuple[0].split(''));
       const setTwo = new Set(tuple[1].split(''));
@@ -27,58 +32,22 @@ export async function partOneSolution() {
       }
       throw new Error('Input error, no matching items');
     }
-
-    function findItemPriority(item: string) {
-      const isLowerCase = item.toLocaleLowerCase() === item;
-      if (isLowerCase) return item.charCodeAt(0) - 96;
-      else return item.charCodeAt(0) - 38;
-    }
-
-    const lineTuple = splitLineInHalf();
-    const sharedItem = findSharedItem(lineTuple);
-    const result = findItemPriority(sharedItem);
-    return result;
   }
-
-  let score = 0;
-
-  const lines = await inputLines();
-  for await (const line of lines) {
-    score = score + processLine(line);
-  }
-  return score;
 }
 
-export async function partTwoSolution() {
-  // group lines by 3 -> [str-a, str-b, str-c]
-  // find common item
-  // find item priority
-  // add priority to score
-
-  const groupedItems: Array<Array<string>> = [];
-  const lines = await inputLines();
-  for await (const line of lines) {
-    let bucket = groupedItems.length - 1;
-    if (bucket === -1) {
-      groupedItems.push([]);
-      bucket++;
-    }
-    if (groupedItems[bucket].length > 2) {
-      groupedItems.push([]);
-      bucket++;
-    }
-    groupedItems[bucket].push(line);
-  }
+export async function day3Problem2() {
+  const data = readLines<string>(inputPath);
+  const groups = groupBySize<string>(3, data);
 
   let score = 0;
-  for (const groupItem of groupedItems) {
-    console.log('groupItem: ', groupItem);
-    const commonItem = findCommonItem(groupItem);
-    console.log('commonItem: ', commonItem);
+  for await (const group of groups) {
+    const commonItem = findCommonItem(group);
     const itemPriority = findItemPriority(commonItem);
-    console.log('itemPriority: ', itemPriority);
-    score = score + itemPriority;
+
+    score += itemPriority;
   }
+
+  return score;
 
   function findCommonItem(group: Array<string>) {
     const a = new Set(group[0].split(''));
@@ -92,12 +61,12 @@ export async function partTwoSolution() {
 
     return item[0];
   }
+}
 
-  function findItemPriority(item: string) {
-    const isLowerCase = item.toLocaleLowerCase() === item;
-    if (isLowerCase) return item.charCodeAt(0) - 96;
-    else return item.charCodeAt(0) - 38;
-  }
+/* helpers */
 
-  return score;
+function findItemPriority(item: string) {
+  const isLowerCase = item.toLocaleLowerCase() === item;
+  if (isLowerCase) return item.charCodeAt(0) - 96;
+  else return item.charCodeAt(0) - 38;
 }
