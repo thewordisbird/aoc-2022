@@ -32,7 +32,10 @@ export async function* groupByDelimiter<T>(
   }
 }
 
-export async function* groupBySize(groupSize: number, gen: AsyncGenerator) {
+export async function* groupBySize<T>(
+  groupSize: number,
+  gen: AsyncGenerator<T>
+) {
   while (true) {
     const group = await createGroup();
     if (!group.length) return;
@@ -40,10 +43,10 @@ export async function* groupBySize(groupSize: number, gen: AsyncGenerator) {
   }
 
   async function createGroup() {
-    const itemGroup = [];
+    const itemGroup: Array<T> = [];
     for await (const item of gen) {
-      if (itemGroup.length > groupSize) return itemGroup;
       itemGroup.push(item);
+      if (itemGroup.length === groupSize) return itemGroup;
     }
     return itemGroup;
   }
