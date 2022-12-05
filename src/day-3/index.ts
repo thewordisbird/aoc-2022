@@ -1,10 +1,4 @@
-// parse file by line
-// splice each line in half
-// find the common char in each pair
-import * as fs from 'fs';
-import * as readline from 'readline';
 import * as path from 'path';
-
 import { readLines, groupBySize } from '../utils';
 
 const inputPath = path.join(__dirname, '..', '..', 'assets', 'day_3_input.txt');
