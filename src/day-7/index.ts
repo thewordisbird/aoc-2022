@@ -1,4 +1,3 @@
-import { dir } from "console";
 import * as path from "path";
 import { readLines } from "../utils";
 
