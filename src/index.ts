@@ -5,15 +5,17 @@ import { day4Problem1, day4Problem2 } from "./day-4";
 import { day5Problem1, day5Problem2 } from "./day-5";
 import { day6Problem1 } from "./day-6";
 import { day7Problem1, day7Problem2 } from "./day-7";
+import { day8Problem1, day8Problem2 } from "./day-8";
 
 async function main() {
-  await logDayResult(1, day1Problem1, day1Problem2);
-  await logDayResult(2, day2Problem1, day2Promblem2);
-  await logDayResult(3, day3Problem1, day3Problem2);
-  await logDayResult(4, day4Problem1, day4Problem2);
-  await logDayResult(5, day5Problem1, day5Problem2);
-  await logDayResult(6, day6Problem1);
-  await logDayResult(7, day7Problem1, day7Problem2);
+  // await logDayResult(1, day1Problem1, day1Problem2);
+  // await logDayResult(2, day2Problem1, day2Promblem2);
+  // await logDayResult(3, day3Problem1, day3Problem2);
+  // await logDayResult(4, day4Problem1, day4Problem2);
+  // await logDayResult(5, day5Problem1, day5Problem2);
+  // await logDayResult(6, day6Problem1);
+  // await logDayResult(7, day7Problem1, day7Problem2);
+  await logDayResult(8, day8Problem1, day8Problem2);
 }
 
 main();
